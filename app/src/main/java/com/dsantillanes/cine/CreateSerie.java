@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -27,30 +28,33 @@ import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import static com.dsantillanes.cine.MainActivity.*;
+import static com.dsantillanes.cine.MainActivity.cine;
+import static com.dsantillanes.cine.MainActivity.listaPeliculas;
+import static com.dsantillanes.cine.MainActivity.listaSeries;
 
-public class CreatePicture extends AppCompatActivity {
+public class CreateSerie extends AppCompatActivity {
 
     Button btnAddImage;
     private static int RESULT_LOAD_IMAGE = 1;
     ImageView imageView;
     Spinner spinnerGenero, spinnerClasificacion;
-    String titulo, director, actores, duracion, descripcion, foto, txtGenero, txtClasificacion;
-    TextView txtTitulo, txtDirector, txtActores, txtDuracion, txtDescripcion;
+    String titulo, director, actores, descripcion, foto, txtGenero, txtClasificacion;
+    TextView txtTitulo, txtDirector, txtActores, txtTemporadas, txtDescripcion;
     Genero genero;
     Clasificacion clasificacion;
+    Integer temporadas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_picture);
+        setContentView(R.layout.activity_create_serie);
         initToolbar();
 
         imageView = (ImageView) findViewById(R.id.imgView);
         txtTitulo = (TextView) findViewById(R.id.txtTitulo);
         txtDirector = (TextView) findViewById(R.id.txtDirector);
         txtActores = (TextView) findViewById(R.id.txtActores);
-        txtDuracion = (TextView) findViewById(R.id.txtDuracion);
+        txtTemporadas = (TextView) findViewById(R.id.txtTemporadas);
         txtDescripcion = (TextView) findViewById(R.id.txtDescripcion);
         btnAddImage = (Button) findViewById(R.id.buttonLoadPicture);
         btnAddImage.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +78,7 @@ public class CreatePicture extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.create_picture, menu);
+        inflater.inflate(R.menu.create_serie, menu);
         return true;
     }
 
@@ -82,7 +86,7 @@ public class CreatePicture extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.createPicture:
+            case R.id.createSerie:
                 call();
                 return true;
             default:
@@ -91,9 +95,10 @@ public class CreatePicture extends AppCompatActivity {
     }
 
     public void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Agregar Película");
+        final ActionBar actionBar = getSupportActionBar();
+        getSupportActionBar().setTitle("Agregar Serie");
     }
 
     public void call(){
@@ -101,12 +106,12 @@ public class CreatePicture extends AppCompatActivity {
         descripcion = String.valueOf(txtDescripcion.getText());
         director = String.valueOf(txtDirector.getText());
         actores = String.valueOf(txtActores.getText());
-        duracion = String.valueOf(txtDuracion.getText());
+        temporadas = Integer.valueOf(String.valueOf(txtTemporadas.getText()));
         txtGenero = spinnerGenero.getSelectedItem().toString();
         genero = Genero.valueOf(txtGenero);
         txtClasificacion = spinnerClasificacion.getSelectedItem().toString();
         clasificacion = Clasificacion.valueOf(txtClasificacion);
-        listaPeliculas = cine.addPelicula(titulo,director,actores,genero,duracion,foto,descripcion,clasificacion,listaPeliculas);
+        listaSeries = cine.addSerie(titulo,director,actores,genero,temporadas,foto,descripcion,clasificacion,listaSeries);
         Intent i = new Intent(getBaseContext(), MainActivity.class);
         startActivity(i);
     }
@@ -174,7 +179,7 @@ public class CreatePicture extends AppCompatActivity {
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
         byte [] b=baos.toByteArray();
-        String temp=Base64.encodeToString(b, Base64.DEFAULT);
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
         return temp;
     }
 
