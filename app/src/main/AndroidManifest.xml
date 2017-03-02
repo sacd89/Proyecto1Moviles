@@ -4,7 +4,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_movie_grey600_48dp"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -19,7 +19,12 @@
             android:name=".PictureDetail"
             android:label="@string/title_activity_picture_detail"
             android:theme="@style/AppTheme" />
-        <activity android:name=".CreatePicture"></activity>
+        <activity android:name=".CreatePicture" />
+        <activity
+            android:name=".SerieDetail"
+            android:label="@string/title_activity_serie_detail"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".CreateSerie"></activity>
     </application>
 
 </manifest>
